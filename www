@@ -1,35 +1,53 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt"))()
 
-local win = lib:Window("Football Fusion 2", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+local win = lib:Window("Mercury V1", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
 
--- Magnets Tab
-local magnetTab = win:Tab("Magnets")
-magnetTab:Toggle("Mags", false, function(state)
-    _G.MagEnabled = state
+local tab = win:Tab("Magnets")
+tab:Toggle("Mags", false, function(t)
+    _G.MagEnabled = t
     while _G.MagEnabled do
-        -- Magnet functionality implementation
+        -- Magnet implementation
         wait()
     end
 end)
 
-magnetTab:Slider("Mag Range", 0, 100, 30, function(value)
-    _G.MagRange = value
+tab:Slider("Mag Range", 0, 100, 30, function(t)
+    _G.MagRange = t
 end)
 
--- QB Aimbot Tab
-local aimbotTab = win:Tab("QB Aimbot")
-aimbotTab:Toggle("QB Aimbot", false, function(state)
-    _G.AimbotEnabled = state
-    while _G.AimbotEnabled do
-        -- Aimbot functionality implementation
-        wait()
-    end
+tab:Dropdown("Mag Settings", {"Legit", "LFG", "Blantant", "Soft Mag"}, function(t)
+    _G.MagType = t
 end)
 
--- Movement Tab
-local movementTab = win:Tab("Movement")
-movementTab:Toggle("Speed Hack", false, function(state)
-    _G.SpeedEnabled = state
+tab:Bind("Bind", Enum.KeyCode.RightShift, function()
+    print("Pressed!")
+end)
+
+local tab = win:Tab("Qb Aimbot")
+tab:Toggle("Qb Aimbot", false, function(t)
+    _G.AimbotEnabled = t
+end)
+   
+tab:Slider("Qb Config", 0, 100, 30, function(t)
+    _G.AimbotConfig = t
+end)
+
+tab:Dropdown("QB Setting", {"Dime", "Angle", "Mag", "Bullet", "Dive", "Toss"}, function(t)
+    _G.QBSetting = t
+end)
+
+local tab = win:Tab("Automatics")
+tab:Toggle("Auto Caption", false, function(t)
+    _G.AutoCaption = t
+end)
+
+tab:Toggle("Auto Qb", false, function(t)
+    _G.AutoQB = t
+end)
+
+local tab = win:Tab("Movement")
+tab:Toggle("Speed", false, function(t)
+    _G.SpeedEnabled = t
     while _G.SpeedEnabled do
         if game.Players.LocalPlayer.Character then
             game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = _G.SpeedValue
@@ -38,12 +56,12 @@ movementTab:Toggle("Speed Hack", false, function(state)
     end
 end)
 
-movementTab:Slider("Speed Value", 16, 150, 16, function(value)
-    _G.SpeedValue = value
+tab:Slider("Speed Hacks", 0, 100, 30, function(t)
+    _G.SpeedValue = t
 end)
 
-movementTab:Toggle("Jump Power", false, function(state)
-    _G.JumpEnabled = state
+tab:Toggle("Jump Power", false, function(t)
+    _G.JumpEnabled = t
     while _G.JumpEnabled do
         if game.Players.LocalPlayer.Character then
             game.Players.LocalPlayer.Character.Humanoid.JumpPower = _G.JumpValue
@@ -52,6 +70,16 @@ movementTab:Toggle("Jump Power", false, function(state)
     end
 end)
 
-movementTab:Slider("Jump Power Value", 50, 200, 50, function(value)
-    _G.JumpValue = value
+tab:Slider("JP Range", 0, 100, 30, function(t)
+    _G.JumpValue = t
+end)
+
+local tab = win:Tab("Settings")
+local changeclr = tab:Colorpicker("Change UI Color", Color3.fromRGB(44, 120, 224), function(t)
+    lib:ChangePresetColor(Color3.fromRGB(t.R * 255, t.G * 255, t.B * 255))
+end)
+
+local tab = win:Tab("Credits")
+tab:Button("Credits", function()
+    lib:Notification("Notification", "zxni for ui and code")
 end)
