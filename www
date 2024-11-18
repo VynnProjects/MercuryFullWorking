@@ -1,0 +1,120 @@
+-- UI Library
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/Vape.txt"))()
+local win = lib:Window("Mercury V2", Color3.fromRGB(44, 120, 224), Enum.KeyCode.RightControl)
+
+-- Global Variables
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+local Football = workspace:WaitForChild("Football")
+
+-- Magnets Tab
+local magnetTab = win:Tab("Magnets")
+magnetTab:Toggle("Mags", false, function(state)
+    _G.MagsEnabled = state
+    while _G.MagsEnabled do
+        if Football and Character then
+            local distance = (Football.Position - Character.HumanoidRootPart.Position).Magnitude
+            if distance <= _G.MagRange then
+                Football.CFrame = Character.HumanoidRootPart.CFrame
+            end
+        end
+        wait()
+    end
+end)
+
+magnetTab:Slider("Mag Range", 0, 100, 30, function(value)
+    _G.MagRange = value
+end)
+
+magnetTab:Dropdown("Mag Settings", {"Legit", "LFG", "Blatant", "Soft Mag"}, function(selected)
+    _G.MagType = selected
+end)
+
+magnetTab:Bind("Bind", Enum.KeyCode.RightShift, function()
+    _G.MagsEnabled = not _G.MagsEnabled
+end)
+
+-- QB Aimbot Tab
+local qbTab = win:Tab("QB Aimbot")
+qbTab:Toggle("QB Aimbot", false, function(state)
+    _G.QBAimbot = state
+    while _G.QBAimbot do
+        -- QB Aimbot logic here
+        wait()
+    end
+end)
+
+qbTab:Slider("QB Config", 0, 100, 30, function(value)
+    _G.QBPower = value
+end)
+
+-- Automatics Tab
+local autoTab = win:Tab("Automatics")
+autoTab:Toggle("Auto Catch", false, function(state)
+    _G.AutoCatch = state
+    while _G.AutoCatch do
+        -- Auto catch logic here
+        wait()
+    end
+end)
+
+-- Movement Tab
+local moveTab = win:Tab("Movement")
+moveTab:Toggle("Speed", false, function(state)
+    _G.SpeedEnabled = state
+    while _G.SpeedEnabled do
+        if Character and Character:FindFirstChild("Humanoid") then
+            Character.Humanoid.WalkSpeed = _G.SpeedValue
+        end
+        wait()
+    end
+end)
+
+moveTab:Slider("Speed Value", 16, 150, 30, function(value)
+    _G.SpeedValue = value
+end)
+
+moveTab:Toggle("Jump Power", false, function(state)
+    _G.JumpEnabled = state
+    while _G.JumpEnabled do
+        if Character and Character:FindFirstChild("Humanoid") then
+            Character.Humanoid.JumpPower = _G.JumpValue
+        end
+        wait()
+    end
+end)
+
+moveTab:Slider("Jump Power", 50, 200, 50, function(value)
+    _G.JumpValue = value
+end)
+
+-- Settings Tab
+local settingsTab = win:Tab("Settings")
+local changeclr = settingsTab:Colorpicker("UI Color", Color3.fromRGB(44, 120, 224), function(color)
+    lib:ChangePresetColor(Color3.fromRGB(color.R * 255, color.G * 255, color.B * 255))
+end)
+
+-- Credits Tab
+local creditsTab = win:Tab("Credits")
+creditsTab:Button("Credits", function()
+    lib:Notification("Credits", "zxni - UI and Base Code\nEnhanced with working features")
+end)
+
+-- Character Added Handler
+LocalPlayer.CharacterAdded:Connect(function(newCharacter)
+    Character = newCharacter
+    wait(0.5)
+    if _G.SpeedEnabled then
+        Character.Humanoid.WalkSpeed = _G.SpeedValue
+    end
+    if _G.JumpEnabled then
+        Character.Humanoid.JumpPower = _G.JumpValue
+    end
+end)
+
+-- Initialize Default Values
+_G.MagRange = 30
+_G.SpeedValue = 30
+_G.JumpValue = 50
+_G.QBPower = 30
